@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puzzle Game</title>
+    <style>
+        :root {
+            /* Responsive Sizing */
+            --phone-height: 92vh; 
+            --phone-width: calc(var(--phone-height) * (9 / 16));
+            --grid-size: 85%; 
+            
+            /* Assets */
+            --img-url: url('Assets/8.webp'); 
+            
+            
+            /* Theme Colors */
+            --wood-light: #d2a679;
+            --wood-dark: #8b5a2b;
+            --gold: #f1c40f;
+        }
+
+        body {
+            background-color: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden;
+        }
+
+        .bg-blur {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: var(--img-url);
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px);
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .mobile-frame {
+            width: var(--phone-width);
+            height: var(--phone-height);
+            max-width: 450px; 
+            max-height: 800px;
+            background: rgba(0, 0, 0, 0.9);
+            border-radius: 4vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 0.8vh solid #333;
+        }
+
+        /* UI Header Bars */
+        .ui-container {
+            width: 90%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3.5vh;
+            z-index: 10;
+        }
+
+        .ui-bar {
+            background: linear-gradient(to bottom, var(--wood-light), var(--wood-dark));
+            border: 0.3vh solid #5d3a1a;
+            border-radius: 3vh;
+            display: flex;
+            align-items: center;
+            padding: 0.5vh 1.5vh;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 0.5vh 1vh rgba(0,0,0,0.5);
+            font-size: 1.8vh;
+        }
+
+        .icon-circle {
+            width: 4.5vh; /* Slightly larger for better visibility */
+            height: 4.5vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 0.5vh;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .icon-circle img {
+            height: 100%;
+            width: auto;
+            object-fit: contain;
+        }.settings-btn {
+            background: none;
+            border: none;
+            box-shadow: none;
+            padding: 0;
+            cursor: pointer;
+        }
+        /* Specific sizing for the UI bars to accommodate larger icons */
+        .ui-bar {
+            padding: 0.2vh 1.2vh; /* Reduced padding as icons are larger now */
+        }
+        /* CENTERED TIMER (Back to original position) */
+        #timer {
+            margin-top: 2.5vh;
+            background: rgba(0,0,0,0.7);
+            padding: 1vh 3vh;
+            border-radius: 1.5vh;
+            font-size: 3.5vh; /* Large size */
+            font-weight: 800;
+            color: #e74c3c;
+            border: 0.3vh solid #e74c3c;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Puzzle Board */
+        .puzzle-board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            width: var(--grid-size);
+            aspect-ratio: 1 / 1;
+            gap: 0.8%;
+            margin-top: 5vh; /* Adjusted for centered timer */
+        }
+
+        .tile {
+            width: 100%; height: 100%;
+            background-image: var(--img-url);
+            background-size: 300% 300%;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 10%;
+            box-sizing: border-box;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tile.selected { border: 0.4vh solid #fff; transform: scale(0.9); z-index: 5; box-shadow: 0 0 15px #fff;}
+        .tile.correct { border: 0.3vh solid #00ffcc; filter: brightness(1.1); }
+
+        /* Win Panel Modal */
+        #win-panel {
+            position: absolute;
+            top: 0; 
+            left: 0; 
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            justify-content: none;
+            align-items: none;
+            border-radius: 3.2vh;
+            overflow: hidden;
+        }
+
+        .panel-content {
+            width: 100%;
+            height: 100%;
+            background-image: url(stars/8.webp);
+            aspect-ratio: 3 / 4;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .star-display {
+            margin-top: 58%; 
+            width: 65%;
+        }
+
+        .play-button{
+            display: flex;
+            flex-direction: row; /* Align horizontal */
+            justify-content: space-between; /* One left, one right */
+            width: 100%; /* Width of the button area */
+            margin-top: 45%;
+        }
+        .restart-btn {
+           width: 45%; /* Adjust size so two fit side-by-side */
+           cursor: pointer;
+           transition: transform 0.1s active;
+           object-fit: contain;
+   
+        }
+        .restart-btn:active {
+            transform: scale(0.95); /* Little click effect */
+        }
+        .ad-btn { background: #4caf50; color: white; box-shadow: 0 0.6vh 0 #2e7d32; }
+
+        .fail-text {
+            color: white;
+            font-size: 3vh;
+            font-weight: bold;
+            margin-top: 10%;
+            text-align: center;
+        }
+        #fail-panel {
+           position: absolute;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9); /* Dark overlay */
+            z-index: 100;
+            display: none; /* Hidden by default */
+            justify-content: center;
+            align-items: center;
+             border-radius: 3.2vh;
+        }
+
+/* The actual plain box inside the fail panel */
+.fail-box {
+    background: #2c3e50;
+    border: 0.5vh solid var(--gold);
+    border-radius: 4vh;
+    padding: 5vh 2vh;
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+}
+
+.fail-text {
+    color: white;
+    font-size: 4vh;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    width: 90%;
+    margin-top: 5%;
+}
+
+.panel-btn {
+    padding: 2vh;
+    border: none;
+    border-radius: 2vh;
+    font-weight: bold;
+    font-size: 2vh;
+    cursor: pointer;
+    text-transform: uppercase;
+}
+         #settings-panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 200;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3.2vh;
+        }
+
+        .settings-box {
+            position: relative;
+            width: 75%;
+            height: 60%;
+            /* background-image: url("stars/settingspanel.webp"); */
+             background-image: url("stars/settingspanel.webp"); 
+
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* icons */
+        .settings-icon {
+           /* width: 9vh; */
+            width: 4vh;
+            cursor: pointer;
+            transition: transform 0.15s ease;
+        }
+
+        .settings-icon:active {
+            transform: scale(0.9);
+        }
+
+        /* close button */
+        .close-icon {
+            position: absolute;
+            top: 3vh;
+            right: 3vh;
+            width: 5vh;
+        }
+
+        /* center alignment */
+        .settings-options {
+            display: flex;
+            flex-direction: column;
+            /* align-items:center; */
+            gap: 4vh;
+            margin-left: 40%;
+            margin-bottom: -5%;
+    
+    
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-blur"></div>
+
+<div class="mobile-frame">
+    <div class="ui-container">
+        <div class="ui-bar">
+            <div class="icon-circle">
+                <img src="stars/home.webp" alt="">
+            </div>
+            <span id="level-display">Lv. 8</span>
+            
+        </div>
+        <!-- <div class="settings-btn" style="padding: 0.5vh;">
+            <div class="icon-circle" style="margin:0;">
+                <img src="stars/settings.webp" alt="">
+            </div> -->
+        <div class="settings-btn" onclick="openSettings()" style="padding: 0.5vh;">
+            <div class="icon-circle" style="margin:0;">
+                <img src="stars/settings.webp" alt="">
+            </div>
+        </div>
+        <div id="settings-panel">
+            <div class="settings-box">
+        
+                <!-- Close Button -->
+                <img src="stars/cancel.webp" class="settings-icon close-icon" onclick="closeSettings()">
+        
+                <!-- Options -->
+                <div class="settings-options">
+                    <img src= "stars/Music.webp" id="sound-btn" class="settings-icon" onclick="toggleSound()">
+                    <img src="stars/Volume.webp"  id="music-btn" class="settings-icon" onclick="toggleMusic()">
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+    <div id="timer">01:00</div>
+
+    <div class="puzzle-board" id="board"></div>
+
+    <div id="win-panel" class="win-panel1">
+        <div class="panel-content">
+            <img id="star-img" src="stars/0Stars.webp" class="star-display">
+            <div class="play-button">
+                <img src="stars/playagain.webp" onclick="location.reload()" alt="" class="restart-btn">
+                <img src="stars/playnext.webp" alt="" class="restart-btn" id="next-btn">
+            </div>
+            
+        </div>
+    </div>
+   <div id="fail-panel">
+    <div class="fail-box">
+        <div class="fail-text">OUT OF TIME!</div>
+        <div class="btn-group">
+            <button class="panel-btn ad-btn" onclick="watchAd()">📺 WATCH AD (+30s)</button>
+            <button class="panel-btn" onclick="location.reload()" style="background: #e74c3c; color: white;">🔄 RETRY</button>
+        </div>
+    </div>
+  </div>
+   </div>
+</div>
+
+<script>
+    const board = document.getElementById('board');
+    const winPanel = document.getElementById('win-panel');
+    const failPanel = document.getElementById('fail-panel');
+    const starImg = document.getElementById('star-img');
+    const timerDisplay = document.getElementById("timer");
+    
+    const INITIAL_TIME = 61;
+    let timeLeft = INITIAL_TIME; 
+    let timerInterval = null;
+    let selectedIndex = null;
+    let gameActive = true;
+    let soundOn = true;
+    let musicOn = true;
+
+    let tiles = Array.from({ length: 9 }, (_, i) => ({
+        id: i,
+        bgX: (i % 3) * 50,
+        bgY: Math.floor(i / 3) * 50,
+        rotation: [0, 90, 180, 270][Math.floor(Math.random() * 4)]
+    }));
+
+    tiles.sort(() => Math.random() - 0.5);
+
+    function updateTimerDisplay() {
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        timerDisplay.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        if (timeLeft <= 10) timerDisplay.style.color = "#ff4d4d";
+        else timerDisplay.style.color = "#e74c3c";
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            if (!gameActive) return;
+            timeLeft--;
+            updateTimerDisplay();
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                showFailPanel();
+                
+            }
+        }, 1000);
+    }
+    
+    function showFailPanel() {
+         gameActive = false;
+         failPanel.style.display = 'flex';
+    }
+
+    function watchAd() {
+        // Here you would normally trigger your Ad SDK
+        alert("Simulating Ad... Rewards: +10 Seconds!");
+        failPanel.style.display = 'none';
+        timeLeft = 30; // Give 30 more seconds
+        gameActive = true;
+        startTimer();
+    }
+    
+
+    function render() {
+        board.innerHTML = '';
+        tiles.forEach((tileData, index) => {
+            const tileDiv = document.createElement('div');
+            tileDiv.className = 'tile';
+            if (selectedIndex === index) tileDiv.classList.add('selected');
+            if (tileData.id === index && tileData.rotation === 0) tileDiv.classList.add('correct');
+
+            tileDiv.style.backgroundPosition = `${tileData.bgX}% ${tileData.bgY}%`;
+            tileDiv.style.transform = `rotate(${tileData.rotation}deg)`;
+
+            tileDiv.onclick = () => { if(gameActive) handleTileClick(index); };
+            tileDiv.ondblclick = () => {
+                if(!gameActive) return;
+                tileData.rotation = (tileData.rotation + 90) % 360;
+                render();
+                checkWin();
+            };
+            board.appendChild(tileDiv);
+        });
+    }
+
+    function handleTileClick(index) {
+        if (selectedIndex === null) {
+            selectedIndex = index;
+        } else if (selectedIndex === index) {
+            // The user clicked the same tile again - deselect it!
+            selectedIndex = null;
+        } else {
+            if (isAdjacent(selectedIndex, index)) {
+                [tiles[selectedIndex], tiles[index]] = [tiles[index], tiles[selectedIndex]];
+                selectedIndex = null;
+            } else {
+                selectedIndex = index;
+            }
+        }
+        render();
+        checkWin();
+    }
+
+    function isAdjacent(idx1, idx2) {
+        const x1 = idx1 % 3, y1 = Math.floor(idx1 / 3);
+        const x2 = idx2 % 3, y2 = Math.floor(idx2 / 3);
+        return (Math.abs(x1 - x2) + Math.abs(y1 - y2)) === 1;
+    }
+
+    function checkWin() {
+        const win = tiles.every((t, i) => t.id === i && t.rotation === 0);
+        if (win) {
+            gameActive = false;
+            clearInterval(timerInterval);
+            showWinPanel();
+        }
+    }
+
+    function showWinPanel() {
+        const timeSpent = INITIAL_TIME - timeLeft;
+        let starFile = "stars/1Stars.webp";
+
+        if (timeSpent <= 35) starFile = "stars/3Stars.webp";
+        else if (timeSpent <= 50) starFile = "stars/2Stars.webp";
+        else starFile = "stars/1Stars.webp";
+
+        starImg.src = starFile;
+        winPanel.style.display = 'flex';
+    
+    }
+
+    render();
+    startTimer();
+    const settingsPanel = document.getElementById("settings-panel");
+
+    function openSettings() {
+    settingsPanel.style.display = "flex";
+    gameActive = false;
+    }
+
+    function closeSettings() {
+    settingsPanel.style.display = "none";
+    gameActive = true;
+    }
+    
+
+    function toggleSound() {
+    soundOn = !soundOn;
+
+    document.getElementById("sound-btn").src =
+        soundOn ? "stars/Music.webp" : "stars/musiccancel.webp";
+    }
+
+    function toggleMusic() {
+    musicOn = !musicOn;
+
+    document.getElementById("music-btn").src =
+        musicOn ? "stars/Volume.webp" : "stars/mute.webp";
+    }
+    // Add this line with your other constants at the top
+const nextBtn = document.getElementById('next-btn');
+
+// Add this event listener anywhere in your script
+nextBtn.onclick = () => {
+    window.location.href = 'level9.html'; 
+};
+</script>
+
+</body>
+</html>
