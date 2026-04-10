@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Puzzle Game</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3212604162895578" crossorigin="anonymous"></script>
     <style>
         :root {
             /* Responsive Sizing */
@@ -12,7 +13,7 @@
             --grid-size: 85%; 
             
             /* Assets */
-            --img-url: url('Assets/5.webp'); 
+            --img-url: url('../assets/Assets/5.webp'); 
             
             
             /* Theme Colors */
@@ -165,7 +166,7 @@
         .panel-content {
             width: 100%;
             height: 100%;
-            background-image: url(stars/5.webp);
+            background-image: url('../assets/stars/5.webp');
             aspect-ratio: 3 / 4;
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -274,8 +275,8 @@
             position: relative;
             width: 75%;
             height: 60%;
-            /* background-image: url("stars/settingspanel.webp"); */
-             background-image: url("stars/settingspanel.webp"); 
+            /* background-image: url("../assets/stars/settingspanel.webp"); */
+             background-image: url("../assets/stars/settingspanel.webp"); 
 
             background-size: 100% 100%;
             background-repeat: no-repeat;
@@ -315,6 +316,101 @@
     
     
         }
+
+        /* Ad styling */
+        .ad-container {
+            width: 90%;
+            margin-top: 2vh;
+            min-height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .adsbygoogle.panel-ad {
+            width: 100%;
+            height: 100px !important;
+            min-height: 100px !important;
+            display: none;
+        }
+
+        .adsbygoogle.panel-ad div,
+        .adsbygoogle.panel-ad iframe {
+            height: 100px !important;
+        }
+
+        /* Watch ad overlay */
+        #watch-ad-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 150;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 3.2vh;
+        }
+
+        .watch-ad-content {
+            width: 85%;
+            aspect-ratio: 1 / 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2vh;
+            padding: 2vh;
+        }
+
+        .watch-ad-close-btn {
+            position: absolute;
+            top: 1vh;
+            right: 1vh;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 5vh;
+            height: 5vh;
+            font-size: 2.5vh;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 151;
+            display: none;
+        }
+
+        .watch-ad-close-btn:hover {
+            background: #c0392b;
+        }
+
+        .ad-timer-text {
+            position: absolute;
+            top: 1vh;
+            right: 1vh;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: 0.3vh solid #e74c3c;
+            border-radius: 1vh;
+            padding: 1vh 2vh;
+            font-size: 2vh;
+            font-weight: bold;
+            z-index: 151;
+        }
+
+        .watch-ad-slot {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     </style>
 </head>
 <body>
@@ -325,30 +421,30 @@
     <div class="ui-container">
         <div class="ui-bar">
             <div class="icon-circle">
-                <img src="stars/home.webp" alt="">
+                <img src="../assets/stars/home.webp" alt="">
             </div>
             <span id="level-display">Lv. 5</span>
             
         </div>
         <!-- <div class="settings-btn" style="padding: 0.5vh;">
             <div class="icon-circle" style="margin:0;">
-                <img src="stars/settings.webp" alt="">
+                <img src="../assets/stars/settings.webp" alt="">
             </div> -->
         <div class="settings-btn" onclick="openSettings()" style="padding: 0.5vh;">
             <div class="icon-circle" style="margin:0;">
-                <img src="stars/settings.webp" alt="">
+                <img src="../assets/stars/settings.webp" alt="">
             </div>
         </div>
         <div id="settings-panel">
             <div class="settings-box">
         
                 <!-- Close Button -->
-                <img src="stars/cancel.webp" class="settings-icon close-icon" onclick="closeSettings()">
+                <img src="../assets/stars/cancel.webp" class="settings-icon close-icon" onclick="closeSettings()">
         
                 <!-- Options -->
                 <div class="settings-options">
-                    <img src= "stars/Music.webp" id="sound-btn" class="settings-icon" onclick="toggleSound()">
-                    <img src="stars/Volume.webp"  id="music-btn" class="settings-icon" onclick="toggleMusic()">
+                    <img src="../assets/stars/Music.webp" id="sound-btn" class="settings-icon" onclick="toggleSound()">
+                    <img src="../assets/stars/Volume.webp" id="music-btn" class="settings-icon" onclick="toggleMusic()">
                 </div>
         
             </div>
@@ -359,12 +455,21 @@
 
     <div class="puzzle-board" id="board"></div>
 
+    <div class="ad-container">
+        <ins class="adsbygoogle panel-ad"
+             style="display:block;"
+             data-ad-client="ca-pub-3212604162895578"
+             data-ad-slot="1523547496"
+             data-ad-format="auto"
+             data-full-width-responsive="true"></ins>
+    </div>
+
     <div id="win-panel" class="win-panel1">
         <div class="panel-content">
-            <img id="star-img" src="stars/0Stars.webp" class="star-display">
+            <img id="star-img" src="../assets/stars/0Stars.webp" class="star-display">
             <div class="play-button">
-                <img src="stars/playagain.webp" onclick="location.reload()" alt="" class="restart-btn">
-                <img src="stars/playnext.webp" alt="" class="restart-btn" id="next-btn">
+                <img src="../assets/stars/playagain.webp" onclick="location.reload()" alt="" class="restart-btn">
+                <img src="../assets/stars/playnext.webp" alt="" class="restart-btn" id="next-btn">
             </div>
             
         </div>
@@ -375,6 +480,21 @@
         <div class="btn-group">
             <button class="panel-btn ad-btn" onclick="watchAd()">📺 WATCH AD (+30s)</button>
             <button class="panel-btn" onclick="location.reload()" style="background: #e74c3c; color: white;">🔄 RETRY</button>
+        </div>
+    </div>
+  </div>
+
+  <div id="watch-ad-overlay">
+    <div class="watch-ad-content">
+        <span class="ad-timer-text" id="ad-timer">Ad closes in 20s</span>
+        <button class="watch-ad-close-btn" id="watch-ad-close" onclick="closeWatchAd()">✕</button>
+        <div class="watch-ad-slot">
+            <ins class="adsbygoogle"
+                 style="display:block; width:100%; height:100%;"
+                 data-ad-client="ca-pub-3212604162895578"
+                 data-ad-slot="1523547496"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
         </div>
     </div>
   </div>
@@ -432,8 +552,36 @@
     }
 
     function watchAd() {
-        // Here you would normally trigger your Ad SDK
-        alert("Simulating Ad... Rewards: +30 Seconds!");
+        // Show ad overlay in puzzle board area
+        const watchAdOverlay = document.getElementById('watch-ad-overlay');
+        const adTimer = document.getElementById('ad-timer');
+        const closeBtn = document.getElementById('watch-ad-close');
+        
+        watchAdOverlay.style.display = 'flex';
+        adTimer.style.display = 'block';
+        closeBtn.style.display = 'none';
+        
+        // Load the ad
+        (adsbygoogle = window.adsbygoogle || []).push({});
+        
+        // Countdown timer
+        let countdown = 20;
+        const countdownInterval = setInterval(() => {
+            countdown--;
+            if (countdown > 0) {
+                adTimer.textContent = `Ad closes in ${countdown}s`;
+            } else {
+                clearInterval(countdownInterval);
+                adTimer.style.display = 'none';
+                closeBtn.style.display = 'block';
+            }
+        }, 1000);
+    }
+
+    function closeWatchAd() {
+        // Close the ad and resume game
+        const watchAdOverlay = document.getElementById('watch-ad-overlay');
+        watchAdOverlay.style.display = 'none';
         failPanel.style.display = 'none';
         timeLeft = 31; // Give 30 more seconds
         gameActive = true;
@@ -498,15 +646,26 @@
 
     function showWinPanel() {
         const timeSpent = INITIAL_TIME - timeLeft;
-        let starFile = "stars/1Stars.webp";
+        let starFile = "../assets/stars/1Stars.webp";
 
-        if (timeSpent <= 35) starFile = "stars/3Stars.webp";
-        else if (timeSpent <= 50) starFile = "stars/2Stars.webp";
-        else starFile = "stars/1Stars.webp";
+        if (timeSpent <= 35) starFile = "../assets/stars/3Stars.webp";
+        else if (timeSpent <= 50) starFile = "../assets/stars/2Stars.webp";
+        else starFile = "../assets/stars/1Stars.webp";
 
         starImg.src = starFile;
         winPanel.style.display = 'flex';
+        showAdOnGameEnd();
     
+    }
+
+    function showAdOnGameEnd() {
+        setTimeout(() => {
+            const panelAd = document.querySelector('.panel-ad');
+            if (panelAd) {
+                panelAd.style.display = 'block';
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            }
+        }, 1000);
     }
 
     render();
@@ -528,14 +687,14 @@
     soundOn = !soundOn;
 
     document.getElementById("sound-btn").src =
-        soundOn ? "stars/Music.webp" : "stars/musiccancel.webp";
+        soundOn ? "../assets/stars/Music.webp" : "../assets/stars/musiccancel.webp";
     }
 
     function toggleMusic() {
     musicOn = !musicOn;
 
     document.getElementById("music-btn").src =
-        musicOn ? "stars/Volume.webp" : "stars/mute.webp";
+        musicOn ? "../assets/stars/Volume.webp" : "../assets/stars/mute.webp";
     }
     // Add this line with your other constants at the top
 const nextBtn = document.getElementById('next-btn');

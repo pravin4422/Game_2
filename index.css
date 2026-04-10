@@ -18,12 +18,8 @@ body {
 .bg-blur {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
-    background-image: var(--img-url);
-    background-size: cover;
-    background-position: center;
-    filter: blur(20px);
+    background-color: #000;
     z-index: -1;
-    opacity: 0.3;
 }
 
 .mobile-frame {
@@ -38,8 +34,38 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-end;
     position: relative;
     overflow: hidden;
     box-shadow: 0 0 50px rgba(0,0,0,0.8);
     border: 0.8vh solid #333;
+}
+
+.level-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5vh;
+    padding: 3vh;
+    width: 90%;
+    margin-bottom: 4vh;
+}
+
+.level-btn {
+    aspect-ratio: 1 / 1;
+    background: rgba(0, 0, 0, 0.6);
+    border: 0.3vh solid #d2a679;
+    border-radius: 1.5vh;
+    color: #fff;
+    font-size: 2.2vh;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.1s, background 0.2s;
+}
+
+.level-btn:hover {
+    background: rgba(210, 166, 121, 0.4);
+}
+
+.level-btn:active {
+    transform: scale(0.92);
 }
