@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>levels page</title>
+
+  <link rel="preload" as="image" href="../assets/level_page/81.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/82.webp"/>
+  <link rel="preload" as="image" href="../assets/level_page/83.webp"/>
+  <link rel="preload" as="image" href="../assets/level_page/84.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/85.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/86.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/87.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/88.webp" />
+  <link rel="preload" as="image" href="../assets/level_page/89.webp"/>
+  <link rel="preload" as="image" href="../assets/level_page/90.webp" />
+  <style>
+    :root {
+    --phone-height: 92vh;
+    --phone-width: calc(var(--phone-height) * (9 / 16));
+  }
+  
+  /* Full screen background */
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    font-family: Arial;
+  }
+  
+  /* Blur background */
+  .bg-blur {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("../assets/level_page/BG (1).webp") center/cover no-repeat;
+    filter: blur(20px);
+    z-index: -1;
+  }
+  
+  /* Mobile frame */
+  .mobile-frame {
+    width: var(--phone-width);
+    height: var(--phone-height);
+    max-width: 450px;
+    max-height: 800px;
+    border-radius: 25px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url("../assets/level_page/BG (1).webp") center/cover no-repeat;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    border: 6px solid #222;
+  }
+  
+  /* Content */
+  .container {
+    width: 90%;
+    text-align: center;
+    margin-top: 15%;
+    position: relative;
+  }
+  
+  .title{
+    font-family: 'Press Start 2P', cursive; /* pixel font */
+    font-size: 40px;
+    color: white;
+  
+    /* Blue outline */
+    text-shadow:
+      -3px -3px 0 #d69c2f,
+       3px -3px 0 #d69c2f,
+      -3px  3px 0 #d69c2f,
+       3px  3px 0 #d69c2f,
+  
+       /* Extra thickness */
+       0px  4px 0 #d69c2f,
+       4px  0px 0 #d69c2f,
+      -4px  0px 0 #d69c2f,
+       0px -4px 0 #d69c2f,
+  
+       /* Black shadow (depth) */
+       6px 6px 0 black;
+       
+  }
+  
+  
+  /* Layout */
+  .row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin: 35px 0;
+  }
+  
+  /* Level Buttons */
+  .level {
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  
+    background: linear-gradient(#ffe08a, #d69c2f);
+    box-shadow: 0 5px 10px rgba(0,0,0,0.4);
+  }
+  
+  .level img {
+    width: 90%;
+    height: 90%;
+  }
+  
+  /* Locked */
+  .level.lock {
+    opacity: 0.7;
+  }
+  
+  
+  .arrow:first-child {
+    position: absolute;
+    left: 50px;
+  }
+  
+  .arrow:last-child {
+    position: absolute;
+    right: 60px;
+  }  
+  
+  /* Navigation */
+  .nav {
+    position: absolute; 
+    top: 72%;            
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    transform: translateY(-50%);
+    margin-top: -30px;
+  }
+  
+  .arrow {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    opacity: 0.7;
+    background: linear-gradient(#ffe08a, #d69c2f);
+    cursor: pointer;
+  }
+  
+  .arrow img {
+    width: 100%;
+  }
+  
+  
+   .level-status {
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    margin-top: 20%;
+    margin-left: 130px;
+   }
+   
+  
+  .level.locked {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+  </style>
+</head>
+<body>
+    <div class="bg-blur"></div>
+
+    <div class="mobile-frame">
+
+    <div class="container">
+
+    <h1 class="title">Puzzle Game</h1>
+
+    <div class="row">
+        <button class="level" data-level="81"><img src="../assets/level_page/81.webp"></button>
+        <button class="level" data-level="82"><img src="../assets/level_page/82.webp"></button>
+        <button class="level" data-level="83"><img src="../assets/level_page/83.webp"></button>
+        <button class="level" data-level="84"><img src="../assets/level_page/84.webp"></button>
+      </div>
+      
+      <div class="row">
+        <button class="level" data-level="85"><img src="../assets/level_page/85.webp"></button>
+        <button class="level" data-level="86"><img src="../assets/level_page/86.webp"></button>
+        <button class="level" data-level="87"><img src="../assets/level_page/87.webp"></button>
+      </div>
+      
+      <div class="row">
+        <button class="level" data-level="88"><img src="../assets/level_page/88.webp"></button>
+        <button class="level" data-level="89"><img src="../assets/level_page/89.webp"></button>
+      </div>
+      
+      <div class="row">
+        <button class="level" data-level="90"><img src="../assets/level_page/90.webp"></button>
+      </div>
+    <div class="nav">
+      <button class="arrow" id="leftArrow"><img src="../assets/level_page/arrow 1.webp"></button>
+      <button class="arrow" id="rightArrow"><img src="../assets/level_page/Arrow 2.webp"></button>
+    </div>
+
+    <div class="level-status">
+      <img src="../assets/level_page/Level Completed.webp" id="completeBtn">
+    </div>
+
+  </div>
+  
+</div>
+
+  <script src="level-page-common.js"></script>
+  <script>
+// Arrow navigation
+const rightArrow = document.getElementById("rightArrow");
+const leftArrow = document.getElementById("leftArrow");
+
+if (leftArrow) {
+  leftArrow.addEventListener("click", () => {
+    window.location.href = "level71to80.html";
+  });
+}
+
+if (rightArrow) {
+  rightArrow.addEventListener("click", () => {
+    window.location.href = "level91to100.html";
+  });
+}
+  </script>
+
+</body>
+</html>

@@ -655,7 +655,8 @@
         starImg.src = starFile;
         winPanel.style.display = 'flex';
         showAdOnGameEnd();
-    
+        
+        markLevelCompleted();
     }
 
     function showAdOnGameEnd() {
@@ -696,15 +697,9 @@
     document.getElementById("music-btn").src =
         musicOn ? "../assets/stars/Volume.webp" : "../assets/stars/mute.webp";
     }
-    // Add this line with your other constants at the top
-const nextBtn = document.getElementById('next-btn');
-
-// Add this event listener anywhere in your script
-nextBtn.onclick = () => {
-    window.location.href = 'level3.html'; 
-};
-    
 </script>
+<script src="level-completion.js"></script>
+<script src="level-navigation.js"></script>
 
 </body>
 </html>
