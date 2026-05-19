@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Progress</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #222;
+            color: white;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+            background: #d69c2f;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+        }
+        .info {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Progress Test</h1>
+    
+    <div class="info">
+        <h3>Current Progress:</h3>
+        <p>Unlocked Level: <span id="unlockedLevel">-</span></p>
+        <p>Completed Levels: <span id="completedLevels">-</span></p>
+    </div>
+
+    <button onclick="checkProgress()">Check Progress</button>
+    <button onclick="resetProgress()">Reset Progress</button>
+    <button onclick="unlockLevel5()">Test: Unlock Level 5</button>
+    <button onclick="goToLevels()">Go to Levels</button>
+
+    <script>
+        function checkProgress() {
+            const unlocked = localStorage.getItem("unlockedLevel") || "1";
+            const completed = localStorage.getItem("completedLevels") || "[]";
+            
+            document.getElementById("unlockedLevel").textContent = unlocked;
+            document.getElementById("completedLevels").textContent = completed;
+            
+            alert(`Unlocked: Level ${unlocked}\nCompleted: ${completed}`);
+        }
+
+        function resetProgress() {
+            localStorage.setItem("unlockedLevel", "1");
+            localStorage.setItem("completedLevels", "[]");
+            alert("Progress reset! Level 1 is now unlocked.");
+            checkProgress();
+        }
+
+        function unlockLevel5() {
+            localStorage.setItem("unlockedLevel", "5");
+            localStorage.setItem("completedLevels", JSON.stringify([1, 2, 3, 4]));
+            alert("Test: Unlocked up to Level 5!");
+            checkProgress();
+        }
+
+        function goToLevels() {
+            window.location.href = "level1to10.html";
+        }
+
+        // Auto-check on load
+        window.onload = checkProgress;
+    </script>
+</body>
+</html>

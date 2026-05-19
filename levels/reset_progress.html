@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Progress</title>
+</head>
+<body>
+    <h1>Reset Game Progress</h1>
+    <button onclick="resetProgress()">Reset Progress</button>
+    <p id="message"></p>
+    
+    <script>
+        function resetProgress() {
+            localStorage.clear();
+            document.getElementById('message').textContent = 'Progress reset! All levels locked except level 1.';
+        }
+    </script>
+</body>
+</html>

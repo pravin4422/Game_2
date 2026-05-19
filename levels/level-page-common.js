@@ -1,6 +1,10 @@
 function updateLevelDisplay() {
     const levels = document.querySelectorAll(".level");
-    let unlockedLevel = parseInt(localStorage.getItem("unlockedLevel")) || 1;
+    let unlockedLevel = parseInt(localStorage.getItem("unlockedLevel"));
+    if (!unlockedLevel || unlockedLevel < 1) {
+        unlockedLevel = 1;
+        localStorage.setItem("unlockedLevel", "1");
+    }
     let completedLevels = JSON.parse(localStorage.getItem("completedLevels")) || [];
   
     levels.forEach((btn) => {
@@ -13,6 +17,11 @@ function updateLevelDisplay() {
       } else {
         btn.classList.remove("locked");
         img.src = `../assets/level_page/${levelNum}.webp`;
+        
+        // Add visual indicator for completed levels
+        if (completedLevels.includes(levelNum)) {
+          btn.style.border = "3px solid #00ff00";
+        }
       }
     });
 }

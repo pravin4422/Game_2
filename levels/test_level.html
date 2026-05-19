@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Level 20</title>
+</head>
+<body>
+    <h1>Set Progress to Level 20</h1>
+    <button onclick="setLevel20()">Set to Level 20 (Lock Level 21)</button>
+    <button onclick="setLevel21()">Set to Level 21 (Unlock Level 21)</button>
+    <button onclick="checkProgress()">Check Current Progress</button>
+    <p id="message"></p>
+    
+    <script>
+        function setLevel20() {
+            localStorage.setItem('unlockedLevel', '20');
+            localStorage.setItem('lastPlayedLevel', '20');
+            document.getElementById('message').textContent = 'Progress set to Level 20. Level 21 should be locked.';
+        }
+        
+        function setLevel21() {
+            localStorage.setItem('unlockedLevel', '21');
+            localStorage.setItem('lastPlayedLevel', '21');
+            document.getElementById('message').textContent = 'Progress set to Level 21. Level 21 should be unlocked.';
+        }
+        
+        function checkProgress() {
+            const unlocked = localStorage.getItem('unlockedLevel') || 1;
+            const lastPlayed = localStorage.getItem('lastPlayedLevel') || 1;
+            document.getElementById('message').textContent = `Unlocked Level: ${unlocked}, Last Played: ${lastPlayed}`;
+        }
+    </script>
+</body>
+</html>
